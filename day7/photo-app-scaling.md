@@ -11,7 +11,7 @@ SnapShare is a photo-sharing app where users upload photos and scroll a feed of 
 - An average photo is 2 MB
 - Each photo also gets a 50 KB thumbnail
 - Peak traffic is 5 times the average
-- There are 86,400 seconds in a day
+- 1 day is approximated as 100,000 seconds to keep the maths simple
 - Storage figures use decimal units (1 TB = 1,000,000 MB)
 
 **Daily active users:** 10,000,000 x 10% = **1,000,000 users per day**
@@ -20,24 +20,24 @@ SnapShare is a photo-sharing app where users upload photos and scroll a feed of 
 
 ### Uploads per second
 - Uploads per day: 1,000,000 users x 1 photo = 1,000,000 uploads
-- Average: 1,000,000 / 86,400 = about **12 uploads per second**
-- Peak (5x): about **58 uploads per second**
+- Average: 1,000,000 / 100,000 = about **10 uploads per second**
+- Peak (5x): about **50 uploads per second**
 
 ### Feed views per second
 - Feed views per day: 1,000,000 users x 50 pages = 50,000,000 views
-- Average: 50,000,000 / 86,400 = about **579 views per second**
-- Peak (5x): about **2,900 views per second**
+- Average: 50,000,000 / 100,000 = about **500 views per second**
+- Peak (5x): about **2,500 views per second**
 
 ### Photo storage per year
 - Storage per upload: 2 MB photo + 0.05 MB thumbnail = 2.05 MB
-- Per day: 1,000,000 x 2.05 MB = 2.05 TB
-- Per year: 2.05 TB x 365 = about **748 TB** (roughly 0.75 PB)
+- Per day: 1,000,000 x 2.05 MB = about 2 TB
+- Per year: about 2 TB x 365 = about **750 TB** (roughly 0.75 PB)
   - Original photos: about 730 TB
   - Thumbnails: about 18 TB
 
 ## 3. Read-heavy or write-heavy?
 
-SnapShare is **read-heavy**. There are about 579 feed views per second against only 12 uploads per second, a ratio of roughly **50 reads for every 1 write**.
+SnapShare is **read-heavy**. There are about 500 feed views per second against only 10 uploads per second, a ratio of roughly **50 reads for every 1 write**.
 
 What this means for the design:
 - Most effort goes into making reads fast and cheap: caching, a CDN, and a read replica so the main database is not overloaded.
@@ -124,5 +124,5 @@ Instead, photo files go into **object storage**, which is cheap, scales almost w
 
 - **Speed vs freshness (cache and read replica):** caches and replicas make feeds fast, but the data can be slightly out of date. A new photo might take a few seconds to appear in a follower's feed. This is acceptable for a photo feed, but would not be for something like a bank balance.
 - **Fast uploads vs instant thumbnails (queue):** using a queue makes uploads feel instant, but the thumbnail is not ready the moment the photo is uploaded. We may need to show a placeholder briefly, and we need to run and monitor the extra queue and workers.
-- **Cost vs performance (CDN and storage):** a CDN gives users fast image loading but adds ongoing cost, and keeping 748 TB per year of photos is expensive. We could reduce cost by moving old photos to cheaper storage, at the price of slower access to them.
+- **Cost vs performance (CDN and storage):** a CDN gives users fast image loading but adds ongoing cost, and keeping 750 TB per year of photos is expensive. We could reduce cost by moving old photos to cheaper storage, at the price of slower access to them.
 - **Complexity vs simplicity:** splitting the system into many components lets it scale and survive failures, but it is harder to build, run and debug than one server and one database.
