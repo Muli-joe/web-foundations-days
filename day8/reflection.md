@@ -1,0 +1,7 @@
+# Course Reflection
+
+The most difficult concept for me was system design, especially thinking about scale. Writing HTML, CSS and JavaScript was about making one page work. Designing something like SnapShare or TicketHub meant asking different questions: how many requests per second, where the data should live, and what happens when thousands of people want the same thing at once. Preventing double-booking was the hardest part, because the code can look correct and still fail when two people click at the same moment. I overcame it by working through the numbers first, and then learning how a transaction, a conditional update and a UNIQUE constraint each protect the data. Seeing the problem as a race between two users made it click.
+
+Based on the feedback I received, I would improve how I check my final work before submitting. One of my design documents reached the repository incomplete, with the upload flow and trade-offs missing, so the reviewer could not assess the strongest parts. In future I will open the pushed file on GitHub and read it to the end before calling it finished. I would also explain my trade-offs in more depth, with clearer reasons for each choice.
+
+Next, I want to learn how to turn these designs into working systems. I plan to build a small backend with a real database, practise writing APIs, and learn more about caching and testing under load. I would also like to deepen my SQL, since it was central to preventing double-booking.
